@@ -33,7 +33,7 @@ ngOnInit(): void {
   );
 }
 
-  onAddItem(form:NgForm){
+  onSubmit(form:NgForm){
     const value=form.value;
     const newIngredient=new Ingredient(value.name,value.amount);
     if(this.editMode){
@@ -43,6 +43,8 @@ ngOnInit(): void {
       this.shoppingListService.addIngredient(newIngredient);
 
     }
+    this.editMode=false;
+    form.reset();
   }
 
   ngOnDestroy(): void {
