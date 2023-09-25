@@ -55,4 +55,9 @@ ngOnInit(): void {
     this.slForm.reset();
     this.editMode=false;
   }
+
+  onDelete(){
+    this.shoppingListService.deleteIngredient(this.editIndexItem);
+    this.onClear();
+  }
 }
