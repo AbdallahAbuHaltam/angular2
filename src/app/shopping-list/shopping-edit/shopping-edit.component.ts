@@ -50,4 +50,9 @@ ngOnInit(): void {
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
+
+  onClear(){
+    this.slForm.reset();
+    this.editMode=false;
+  }
 }
