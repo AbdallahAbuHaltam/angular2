@@ -1,31 +1,49 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { RecipeService } from '../recipe.service';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-recipe-edit',
   templateUrl: './recipe-edit.component.html',
   styleUrls: ['./recipe-edit.component.css']
 })
-export class RecipeEditComponent implements OnInit ,OnDestroy{
+export class RecipeEditComponent implements OnInit {
   id:number;
   editMode=false;
-  private igChangeSub:Subscription;
-  constructor(private route:ActivatedRoute){
-
+  recipeForm:FormGroup;
+  constructor(private route:ActivatedRoute,private recipeService:RecipeService){
+  
   }
 
   ngOnInit(): void {
 
-      this.igChangeSub=this.route.params.subscribe(
+     this.route.params.subscribe(
         (params:Params)=>{
           this.id=+params['id'];
           this.editMode=params['id']!=null;
-          console.log(this.editMode);
+          this.initForm();
         }
       );
   }
-  ngOnDestroy(): void {
-    this.igChangeSub.unsubscribe();
+
+  private initForm(){
+    let recipeName='';
+    let recipeImageUrl='';
+    let recipeDescription='';
+
+
+    if(this.editMode){
+      const recipe = this.recipeService.getRecipee(this.id);
+      recipeName=recipe.name;
+      recipeImageUrl=recipe.imagePath;
+      recipeDescription=recipe.description;
+    }
+
+    this.recipeForm=new FormGroup({
+      'name':new FormControl(),
+      'imagePath':new FormControl(),
+      'description': new FormControl()
+    });
   }
 }
